@@ -1,16 +1,19 @@
 package frc.robot;
 
+import frc.robot.subsystems.DrunkDriveInator;
 import frc.robot.subsystems.swerve.DriveSubsystem;
 import frc.robot.subsystems.swerve.Constants.AutoConstants;
 import frc.robot.subsystems.swerve.Constants.DriveConstants;
 import frc.robot.subsystems.swerve.Constants.OIConstants;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.RunDDI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.math.MathUtil;
+import frc.robot.commands.RunDDI;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +24,9 @@ import edu.wpi.first.math.MathUtil;
 public class SysIdRoutineBot {
   // The robot's subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
+  private final DrunkDriveInator xDDI = new DrunkDriveInator();
+  private final DrunkDriveInator yDDI = new DrunkDriveInator();
+  private final RunDDI m_DDI = new RunDDI(xDDI,yDDI,m_drive);
  // private final Shooter m_shooter = new Shooter();
 
   // The driver's controller
@@ -43,6 +49,9 @@ public class SysIdRoutineBot {
             () -> -Math.pow(MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriverControllerDeadBand), 3) * DriveConstants.kMaxSpeedMetersPerSecond,
             () -> -Math.pow(MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriverControllerDeadBand), 3) * AutoConstants.kMaxAngularSpeedRadiansPerSecond,
             false));
+
+    //bind for the DrunkDriveInator
+    m_driverController.y().whileTrue(new RunDDI(xDDI, yDDI, m_drive));
 
     // Bind full set of SysId routine tests to buttons; a complete routine should run each of these
     // once.
