@@ -13,18 +13,29 @@ import frc.robot.Constants;
 public class RunDDI extends Command{
   private DrunkDriveInator xDDI;
   private DrunkDriveInator yDDI;
-  private DriveSubsystem heading;
+  private DriveSubsystem driving;
   
-  public RunDDI(double xDDI,double yDDI, double heading){
-    addRequirements(_xDDI);
-    addRequirements(_yDDI);
-    addRequirements(_heading);
+  public RunDDI(DrunkDriveInator _xDDI,DrunkDriveInator _yDDI, DriveSubsystem _driving){
+    
+    
+    addRequirements(_driving);
 
     xDDI = _xDDI;
     yDDI = _yDDI;
-    heading = _heading
+    driving = _driving;
   }
   @Override
   public void initialize(){}
+
+  @Override
+  public void execute(){
+    driving.drive(xDDI.getDDISpeed(),yDDI.getDDISpeed(),driving.getHeading(),false);
+  }
+
+  @Override
+  public boolean isFinished(){
+    return false;
+  }
+  
   
 }
