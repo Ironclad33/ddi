@@ -13,7 +13,7 @@ import frc.robot.Constants;
 public class RunDDI extends Command{
   private final DrunkDriveInator xDDI;
   private final DrunkDriveInator yDDI;
-  
+  private final DriveSubsystem driving;
   
   //increments with execute, when it hits 50 it will end the command
   private int timer = 0;
@@ -26,7 +26,7 @@ public class RunDDI extends Command{
 
     xDDI = _xDDI;
     yDDI = _yDDI;
-    
+    driving = _driving;
   }
   @Override
   public void initialize(){}
@@ -49,3 +49,4 @@ public class RunDDI extends Command{
   
   
 }
+
