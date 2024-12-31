@@ -18,6 +18,9 @@ public class RunDDI extends Command{
   //increments with execute, when it hits 50 it will end the command
   private int timer = 0;
 
+  private double xDDISpeed;
+  private double yDDISpeed;
+  private boolean flipped = false;
 
   public RunDDI(DrunkDriveInator _xDDI,DrunkDriveInator _yDDI, DriveSubsystem _driving){
     
@@ -29,12 +32,23 @@ public class RunDDI extends Command{
     driving = _driving;
   }
   @Override
-  public void initialize(){}
+  public void initialize(){
+    xDDISpeed=xDDI.getDDISpeed();
+    yDDISpeed = yDDI.getDDISpeed();
+    
+  }
 
   @Override
   public void execute(){
-    driving.drive(xDDI.getDDISpeed(),yDDI.getDDISpeed(),0,false);
+    
+    if((timer>25)&&(flipped = false)){
+      xDDISpeed*=-0.9;
+      yDDISpeed*=-0.9;
+      flipped = true;
+    }
+    driving.swerveDriveCommand(()-> xDDISpeed,()->yDDISpeed,()->0,false);
     timer++;
+  
   }
 
   @Override
@@ -45,6 +59,12 @@ public class RunDDI extends Command{
       return false;
     }
     
+  }
+  
+  
+}
+
+
   }
   
   
